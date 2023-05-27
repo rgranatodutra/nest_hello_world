@@ -1,3 +1,4 @@
+import { plainToInstance } from "class-transformer";
 import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { User } from "../entities/user.entity";
@@ -12,18 +13,18 @@ export class UsersInMemoryRepository implements UsersRepository {
         Object.assign(newUser, { ...data });
         this.memoryDB.push(newUser);
 
-        return newUser;
+        return plainToInstance(User, newUser);
     };
 
     public getAll(): User[] | Promise<User[]> {
-        return this.memoryDB;
+        return plainToInstance(User, this.memoryDB);
     };
 
     public getOneById(id: string): User | Promise<User> {
         const findUser = this.memoryDB.find(u => u.id === id);
         if (!findUser) throw new Error('User not found.');
         
-        return findUser
+        return plainToInstance(User, findUser);
     };
 
     public update(id: string, data: UpdateUserDto ): User | Promise<User> {
@@ -36,7 +37,7 @@ export class UsersInMemoryRepository implements UsersRepository {
             updatedAt: new Date()
         };
 
-        return this.memoryDB[findUserIndex];
+        return plainToInstance(User, this.memoryDB[findUserIndex]);
     };
 
     public deactivate(id: string): User | Promise<User> {
@@ -46,7 +47,7 @@ export class UsersInMemoryRepository implements UsersRepository {
         this.memoryDB[findUserIndex].active = false;
         this.memoryDB[findUserIndex].deactivatedAt = new Date();
 
-        return this.memoryDB[findUserIndex];
+        return plainToInstance(User, this.memoryDB[findUserIndex]);
     };
 
     public delete(id: string): void | Promise<void> {
