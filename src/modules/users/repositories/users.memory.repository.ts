@@ -3,7 +3,9 @@ import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { User } from "../entities/user.entity";
 import { UsersRepository } from "./users.repository";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class UsersInMemoryRepository implements UsersRepository {
 
     private memoryDB: Array<User> = [];
@@ -22,14 +24,18 @@ export class UsersInMemoryRepository implements UsersRepository {
 
     public getOneById(id: string): User | Promise<User> {
         const findUser = this.memoryDB.find(u => u.id === id);
-        if (!findUser) throw new Error('User not found.');
+        
+        return plainToInstance(User, findUser);
+    };
+
+    public getOneByLogin(login: string): User | Promise<User> {
+        const findUser = this.memoryDB.find(u => u.login === login);
         
         return plainToInstance(User, findUser);
     };
 
     public update(id: string, data: UpdateUserDto ): User | Promise<User> {
         const findUserIndex = this.memoryDB.findIndex(u => u.id === id);
-        if (!~findUserIndex) throw new Error('User not found.');
         
         this.memoryDB[findUserIndex] = { 
             ...this.memoryDB[findUserIndex],
@@ -42,7 +48,6 @@ export class UsersInMemoryRepository implements UsersRepository {
 
     public deactivate(id: string): User | Promise<User> {
         const findUserIndex = this.memoryDB.findIndex(u => u.id === id);
-        if (!~findUserIndex) throw new Error('User not found.');
 
         this.memoryDB[findUserIndex].active = false;
         this.memoryDB[findUserIndex].deactivatedAt = new Date();
@@ -52,7 +57,6 @@ export class UsersInMemoryRepository implements UsersRepository {
 
     public delete(id: string): void | Promise<void> {
         const findUserIndex = this.memoryDB.findIndex(u => u.id === id);
-        if (!~findUserIndex) throw new Error('User not found.');
         
         this.memoryDB.splice(findUserIndex, 1);
     };
