@@ -24,20 +24,20 @@ export class UsersInMemoryRepository implements UsersRepository {
 
     public getOneById(id: string): User | Promise<User> {
         const findUser = this.memoryDB.find(u => u.id === id);
-        
+
         return plainToInstance(User, findUser);
     };
 
     public getOneByLogin(login: string): User | Promise<User> {
         const findUser = this.memoryDB.find(u => u.login === login);
-        
+
         return plainToInstance(User, findUser);
     };
 
-    public update(id: string, data: UpdateUserDto ): User | Promise<User> {
+    public update(id: string, data: UpdateUserDto): User | Promise<User> {
         const findUserIndex = this.memoryDB.findIndex(u => u.id === id);
-        
-        this.memoryDB[findUserIndex] = { 
+
+        this.memoryDB[findUserIndex] = {
             ...this.memoryDB[findUserIndex],
             ...data,
             updatedAt: new Date()
@@ -57,7 +57,7 @@ export class UsersInMemoryRepository implements UsersRepository {
 
     public delete(id: string): void | Promise<void> {
         const findUserIndex = this.memoryDB.findIndex(u => u.id === id);
-        
+
         this.memoryDB.splice(findUserIndex, 1);
     };
 };

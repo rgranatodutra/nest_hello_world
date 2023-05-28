@@ -32,7 +32,7 @@ export class UsersService {
     if (!findUser) throw new NotFoundException("User not found.");
 
     const updatedUser = await this.usersRepository.update(id, data);
-    
+
     return updatedUser;
   };
 
@@ -41,7 +41,7 @@ export class UsersService {
     if (!findUser) throw new NotFoundException("User not found.");
 
     const deactivatedUser = await this.usersRepository.deactivate(id);
-    
+
     return deactivatedUser;
   };
 

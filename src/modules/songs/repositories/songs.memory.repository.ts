@@ -17,7 +17,7 @@ export class SongsInMemoryRepository implements SongsRepository {
     };
 
     public async getAll(groupParameter: string | undefined): Promise<Song[] | Object> {
-        if(groupParameter){
+        if (groupParameter) {
             // Mapeia todas as possíblidades do parametro - ex: todos artistas se agrupado por artistas;
             const groupSet = new Set(this.memoryDB.map(s => s[groupParameter])) as Set<string>;
 
