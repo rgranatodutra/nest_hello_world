@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song.dto';
 import { SongsRepository } from './repositories/songs.repository';
 
@@ -18,6 +18,7 @@ export class SongsService {
 
   public async getOne(id: string) {
     const findSong = this.songsRepository.getOneById(id);
+    if (!findSong) throw new NotFoundException("Song not found.")
     return findSong
   };
 };
