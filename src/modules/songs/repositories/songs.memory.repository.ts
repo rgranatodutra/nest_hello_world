@@ -20,7 +20,6 @@ export class SongsInMemoryRepository implements SongsRepository {
         if(groupParameter){
             // Mapeia todas as possíblidades do parametro - ex: todos artistas se agrupado por artistas;
             const groupSet = new Set(this.memoryDB.map(s => s[groupParameter])) as Set<string>;
-            console.log(groupSet)
 
             let groupedReturn = {};
 
